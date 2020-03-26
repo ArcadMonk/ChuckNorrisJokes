@@ -9,5 +9,6 @@
         android:padding="10dp"
         android:textAlignment="textStart"
         android:layout_marginBottom="5dp"
+        android:background="@drawable/cust_item_background"
 
     />
