@@ -9,13 +9,14 @@ import retrofit2.Call as Call
 
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
+import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory.create
 
 
 
-
+@UnstableDefault
 object JokeApiServiceFactory  {
     // create an instance of JokeApiService
     fun objFuncJkFactory () :JokeApiService {
