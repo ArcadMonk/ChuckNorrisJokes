@@ -57,12 +57,13 @@ class MainActivity : AppCompatActivity() {
 
         var joke: Joke
         val jokeFactory:JokeApiServiceFactory = JokeApiServiceFactory
-        val sglJoke = jokeFactory.objFuncJkFactory().giveMeAJoke()
+        val sglJoke = jokeFactory.objFuncJkFactory().giveMeAJoke().repeat(2)
             .delay(2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe{progressBar.setVisibility(View.VISIBLE)}
-            .doOnDispose {
+            .doOnNext{}
+            .doAfterTerminate {
                 cmpsitDisposbl.clear()
             }
             .doOnTerminate{
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
             .subscribeBy(
                 onError={Log.d("Joke :", "$it")},
-                onSuccess={
+                onNext={
                     tempViewAdapter.jokes = tempViewAdapter.jokes.plus(it)
                 }
             )

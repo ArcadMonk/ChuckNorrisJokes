@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ChuckNorrisJokes</string>
-    <string name="ButtonText">add a joke</string>
+    <string name="ButtonText">More jokes</string>
 
 </resources>
