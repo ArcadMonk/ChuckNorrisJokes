@@ -7,12 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.*
 import org.w3c.dom.Text
 
-class JokeAdapter (  jokes:List<Joke> = emptyList() ) : Adapter <JokeAdapter.JokeViewHolder>(){
+class JokeAdapter () : Adapter <JokeAdapter.JokeViewHolder>(){
 
     class JokeViewHolder( val textJoke: TextView): ViewHolder(textJoke)
 
-    var jokes =jokes
+    var jokes = emptyList<Joke>()
         set(value) {
+            field=value
             notifyDataSetChanged()
         }
 
@@ -25,7 +26,7 @@ class JokeAdapter (  jokes:List<Joke> = emptyList() ) : Adapter <JokeAdapter.Jok
     }
     override fun getItemCount(): Int {
 
-        return JokeList.jokes.size
+        return jokes.size
     }
     override fun onBindViewHolder(holder: JokeViewHolder, position: Int) {
         holder.textJoke.text = jokes[position].value

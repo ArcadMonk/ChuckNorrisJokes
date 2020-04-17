@@ -5,7 +5,7 @@ import kotlinx.serialization.*
 import java.lang.Exception
 
 @Serializable
-data class Joke(val categories:List<String>,
+ data class Joke(val categories:List<String>,
            @SerialName("created_at")
            val createdAt:String,
            @SerialName("icon_url")
