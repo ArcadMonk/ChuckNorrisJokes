@@ -30,18 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/recvlerview_id"
 
         />
-    <Button
-        android:id="@+id/addButton_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ButtonText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
 
-
-        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

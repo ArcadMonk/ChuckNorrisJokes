@@ -3,10 +3,7 @@ package com.example.chucknorrisjokes
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import java.util.concurrent.TimeUnit
-import android.widget.ProgressBar;
-
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit
 
 
 private val LOGTAG = "MyActivity"
@@ -24,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var progressBar: ProgressBar
-    private lateinit var addJokeButton: Button
 
     private val cmpsitDisposbl= CompositeDisposable()
 
@@ -34,26 +30,33 @@ class MainActivity : AppCompatActivity() {
 
         viewManager = LinearLayoutManager(this)
         progressBar = findViewById(R.id.pregressBar_id)
-        addJokeButton = findViewById(R.id.addButton_id)
 
-        var viewAdapter = JokeAdapter()
+        var viewAdapter: JokeAdapter = JokeAdapter()
 
         recyclerView = findViewById<RecyclerView>(R.id.recvlerview_id).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
-        addJokeButton.setOnClickListener {
 
-            addToViewAdapter(viewAdapter)
+        addToViewAdapter(viewAdapter)
+
+        viewAdapter.setBottomReachedL(object : OnBottomReachedListener {
+            override fun onBottomReached(position: Int) {
+                addToViewAdapter(viewAdapter)
+                //To test fonctionning viewAdapter update :
+                Log.d("PRINTING",viewAdapter.jokes.size.toString())
+
+            }
+        })
 
 
-        }
+
+
+
     }
 
     fun addToViewAdapter(tempViewAdapter : JokeAdapter){
-
-
 
         var joke: Joke
         val jokeFactory:JokeApiServiceFactory = JokeApiServiceFactory
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 onError={Log.d("Joke :", "$it")},
                 onNext={
                     tempViewAdapter.jokes = tempViewAdapter.jokes.plus(it)
+
                 }
             )
 
