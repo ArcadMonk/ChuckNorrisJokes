@@ -30,8 +30,6 @@ class JokeView (context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
 
     fun setupView(model : Model){
-
-
         textView.text = model.text
         favState = model.fav
         favButton.setImageResource(R.drawable.share_icon)

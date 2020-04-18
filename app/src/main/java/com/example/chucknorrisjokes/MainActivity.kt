@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var savedJokes:List<Joke>
 
     private val cmpsitDisposbl= CompositeDisposable()
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +63,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d("PRINTING",viewAdapter.jokes.size.toString())
             }
         })
+
+        val  callback = JokeTouch({mindex -> viewAdapter.deleteJoke(mindex)},{mindexFrom,mindexTo->viewAdapter.moveJoke(mindexFrom,mindexTo)})
+        callback.attachToRecyclerView(recyclerView)
     } // fin onCreate
 
     fun addToViewAdapter(tempViewAdapter : JokeAdapter){

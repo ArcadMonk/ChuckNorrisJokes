@@ -1,11 +1,10 @@
 package com.example.chucknorrisjokes
 
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import java.util.*
 
 private val LOGTAG = "MyActivity/JokeAdapter"
 
@@ -63,6 +62,28 @@ class JokeAdapter() : Adapter <JokeAdapter.JokeViewHolder>(){
     fun setBottomReachedL(onBottomReachedListener: OnBottomReachedListener) {
         this.onBottomReachedListener = onBottomReachedListener
     }
+
+    fun moveJoke(indexFrom : Int, indexTo : Int) : Boolean{
+        val joke = jokes[indexFrom]
+        if (indexFrom < indexTo) {
+            for (i in indexFrom until indexTo) {
+                Collections.swap(jokes, i, i + 1)
+            }
+        } else {
+            for (i in indexFrom downTo indexTo + 1) {
+                Collections.swap(jokes, i, i - 1)
+            }
+        }
+        Log.d(LOGTAG, "jokes at "+indexFrom+" moved to "+indexTo)
+
+        return joke == jokes[indexTo]
+    }
+
+    fun deleteJoke(index : Int){
+        jokes = jokes.subList(0, index).plus(jokes.subList(index+1, jokes.size))
+        Log.d(LOGTAG, "deleted joke : "+jokes[index].value)
+    }
+
 
 }
 
