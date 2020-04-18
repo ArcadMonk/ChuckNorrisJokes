@@ -2,4 +2,9 @@
     <string name="app_name">ChuckNorrisJokes</string>
     <string name="ButtonText">More jokes</string>
 
+    <string name="favButton">favButton</string>
+    <string name="shareButton">shareButton</string>
+
+    <string name="image_button_clicked">imageButton clicked</string>
+
 </resources>
