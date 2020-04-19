@@ -19,7 +19,7 @@ class JokeView (context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     lateinit var shareButton : ImageButton
     lateinit var favButton : ImageButton
     var layout : Int = R.layout.joke_layout
-    var favState : Boolean = false
+    //var favState : Boolean = false
     init {
         View.inflate(context, layout, this)
         textView = findViewById(R.id.text_view_id)
@@ -31,8 +31,7 @@ class JokeView (context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
     fun setupView(model : Model){
         textView.text = model.text
-        favState = model.fav
-        favButton.setImageResource(R.drawable.share_icon)
+        //favState = model.fav
         if(model.fav)
             favButton.setImageResource(R.drawable.icon_fav_full)
         else
