@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var progressBar: ProgressBar
+    //private lateinit var progressBar: ProgressBar
+    private lateinit var refreshBar: SwipeRefreshLayout
     private lateinit var sharedPref: SharedPreferences
     private lateinit var savedAdapter: JokeAdapter
 
@@ -34,24 +36,25 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sharedPref= getSharedPreferences("Favorite Joke", Context.MODE_PRIVATE)
+        sharedPref = getSharedPreferences("Favorite Joke", Context.MODE_PRIVATE)
         sharedPref.all.forEach {
             initFavList = initFavList.plus(
-                Json(JsonConfiguration.Stable).parse(Joke.serializer(), it.value.toString()
+                Json(JsonConfiguration.Stable).parse(
+                    Joke.serializer(), it.value.toString()
                 )
             )
         }
         sharedPref.edit().apply { clear() }.apply()
 
-
+        refreshBar = findViewById(R.id.container_id)
+        refreshBar.setColorSchemeResources(R.color.purple)
 
         viewManager = LinearLayoutManager(this)
-        progressBar = findViewById(R.id.pregressBar_id)
-
         val viewAdapter: JokeAdapter = JokeAdapter(initFavList)
         //load the save
         savedAdapter = viewAdapter
@@ -78,8 +81,14 @@ class MainActivity : AppCompatActivity() {
 
         callback.attachToRecyclerView(recyclerView)
 
-        addToViewAdapter(viewAdapter)
-    } // fin onCreate
+
+        refreshBar.setOnRefreshListener{
+            addToViewAdapter(viewAdapter)
+        }
+    }// fin onCreate
+
+
+
 
     fun addToViewAdapter(tempViewAdapter: JokeAdapter) {
 
@@ -88,13 +97,13 @@ class MainActivity : AppCompatActivity() {
             .delay(2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { progressBar.setVisibility(View.VISIBLE) }
+            .doOnSubscribe { refreshBar.isRefreshing=true }
             .doOnNext {}
             .doAfterTerminate {
                 cmpsitDisposbl.clear()
             }
             .doOnTerminate {
-                progressBar.setVisibility(View.INVISIBLE)
+                refreshBar.isRefreshing=false
             }
             .subscribeBy(
                 onError = { Log.d("Joke (ERROR) :", "$it") },
@@ -139,7 +148,6 @@ class MainActivity : AppCompatActivity() {
             }
         }.apply()
     }
-
 }
 
 
